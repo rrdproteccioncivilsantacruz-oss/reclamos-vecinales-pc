@@ -241,17 +241,14 @@
         <option>Otro</option>
       </select>
     </div>
-    <div class="form-field">
-      <label>Prioridad</label>
-      <select id="f-prior">
-        <option>Normal</option>
-        <option>Urgente</option>
-        <option>Crítico</option>
-      </select>
-    </div>
+
     <div class="form-field">
       <label>Operador que recepciona</label>
       <input type="text" id="f-oper" placeholder="Apellido y nombre" autocomplete="off">
+    </div>
+    <div class="form-field">
+      <label>Derivado a</label>
+      <input type="text" id="f-derivado" placeholder="Organismo o ente al que se deriva (opcional)" autocomplete="off">
     </div>
     <div class="form-field form-full">
       <label>Descripción del reclamo</label>
@@ -293,7 +290,7 @@
   <div style="overflow-x:auto;">
     <table>
       <thead>
-        <tr><th>#</th><th>Fecha</th><th>Hora</th><th>Turno</th><th>Vecino</th><th>Dirección</th><th>Tipo</th><th>Prior.</th><th>Estado</th><th>Acción</th></tr>
+        <tr><th>#</th><th>Fecha</th><th>Hora</th><th>Turno</th><th>Vecino</th><th>Dirección</th><th>Tipo</th><th>Estado</th><th>Acción</th></tr>
       </thead>
       <tbody id="reg-body"></tbody>
     </table>
@@ -390,6 +387,8 @@ function guardarReclamo(){
   const now=new Date(), pad=n=>String(n).padStart(2,'0');
   const turno=document.getElementById('f-turno').value;
   const lista=loadData();
+  const derivadoOrg = document.getElementById('f-derivado').value.trim();
+  const estadoInicial = derivadoOrg ? 'Derivado' : 'Pendiente';
   lista.push({
     id: Date.now(),
     fecha: `${pad(now.getDate())}/${pad(now.getMonth()+1)}/${now.getFullYear()}`,
@@ -399,18 +398,18 @@ function guardarReclamo(){
     tel:  document.getElementById('f-tel').value.trim(),
     tel2: document.getElementById('f-tel2').value.trim(),
     direccion: dir, tipo: document.getElementById('f-tipo').value,
-    prioridad: document.getElementById('f-prior').value,
-    operador: oper||'—', descripcion: desc, estado: 'Pendiente'
+    operador: oper||'—', descripcion: desc,
+    estado: estadoInicial,
+    derivado: derivadoOrg || ''
   });
   saveData(lista);
-  ['f-nombre','f-tel','f-tel2','f-dir','f-oper','f-desc'].forEach(id=>document.getElementById(id).value='');
+  ['f-nombre','f-tel','f-tel2','f-dir','f-oper','f-desc','f-derivado'].forEach(id=>document.getElementById(id).value='');
   updateChar();
   showToast('✓ Reclamo registrado',false);
 }
 
 // ── TURNO LABEL ──
 function tLabel(t){ return {M:'Mañana',T:'Tarde',N:'Noche',A:'Madrugada'}[t]||t; }
-function pColor(p){ return {Normal:'var(--accent3)',Urgente:'var(--warn)',Crítico:'var(--danger)'}[p]||'var(--muted)'; }
 
 // ── RENDER REGISTROS ──
 function renderRegistros(){
@@ -435,8 +434,7 @@ function renderRegistros(){
       <td style="font-size:0.78rem;white-space:nowrap">${r.nombre}</td>
       <td style="font-size:0.75rem">${r.direccion}</td>
       <td style="font-size:0.75rem">${r.tipo}</td>
-      <td style="font-size:0.75rem;color:${pColor(r.prioridad)}">${r.prioridad}</td>
-      <td><span class="estado-badge ${r.estado.replace(' ','.')}">${r.estado}</span></td>
+      <td><span class="estado-badge ${r.estado.replace(' ','.')}" title="${r.derivado?'→ '+r.derivado:''}">${r.estado}${r.derivado?' →':''}</span></td>
       <td><button style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;padding:2px 8px;background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:2px;cursor:pointer;" onclick="verDetalle(${r.id})">Ver</button></td>
     </tr>`).join('');
 }
@@ -454,8 +452,8 @@ function verDetalle(id){
     ${r.tel2?`<div class="detalle-row"><div class="detalle-lbl">Teléfono 2</div><div class="detalle-val">${r.tel2}</div></div>`:''}
     <div class="detalle-row"><div class="detalle-lbl">Dirección</div><div class="detalle-val">${r.direccion}</div></div>
     <div class="detalle-row"><div class="detalle-lbl">Tipo</div><div class="detalle-val">${r.tipo}</div></div>
-    <div class="detalle-row"><div class="detalle-lbl">Prioridad</div><div class="detalle-val" style="color:${pColor(r.prioridad)}">${r.prioridad}</div></div>
     <div class="detalle-row"><div class="detalle-lbl">Estado</div><div class="detalle-val"><span class="estado-badge ${r.estado.replace(' ','.')}">${r.estado}</span></div></div>
+    ${r.derivado?`<div class="detalle-row"><div class="detalle-lbl">Derivado a</div><div class="detalle-val" style="color:var(--accent);font-weight:600;">${r.derivado}</div></div>`:''}
     <div class="detalle-row"><div class="detalle-lbl">Operador</div><div class="detalle-val">${r.operador}</div></div>
     <div class="detalle-desc">${r.descripcion}</div>
     <div class="detalle-actions">
@@ -488,11 +486,11 @@ function renderStats(){
 function exportExcel(){
   const d=loadData();
   if(!d.length){ showToast('Sin datos para exportar',true); return; }
-  const rows=[['#','Fecha','Hora','Turno','Vecino','Teléfono 1','Teléfono 2','Dirección','Tipo','Prioridad','Operador','Estado','Descripción']];
-  d.forEach((r,i)=>rows.push([i+1,r.fecha,r.hora,tLabel(r.turno),r.nombre,r.tel||'',r.tel2||'',r.direccion,r.tipo,r.prioridad,r.operador,r.estado,r.descripcion]));
+  const rows=[['#','Fecha','Hora','Turno','Vecino','Teléfono 1','Teléfono 2','Dirección','Tipo','Operador','Estado','Derivado a','Descripción']];
+  d.forEach((r,i)=>rows.push([i+1,r.fecha,r.hora,tLabel(r.turno),r.nombre,r.tel||'',r.tel2||'',r.direccion,r.tipo,r.operador,r.estado,r.derivado||'',r.descripcion]));
   const wb=XLSX.utils.book_new();
   const ws=XLSX.utils.aoa_to_sheet(rows);
-  ws['!cols']=[4,12,8,12,20,14,14,24,20,12,18,12,50].map(w=>({wch:w}));
+  ws['!cols']=[4,12,8,12,20,14,14,24,20,18,12,20,50].map(w=>({wch:w}));
   XLSX.utils.book_append_sheet(wb,ws,'Reclamos Vecinales');
   const hoyStr=new Date().toLocaleDateString('es-AR').replace(/\//g,'-');
   XLSX.writeFile(wb,`reclamos_vecinales_${hoyStr}.xlsx`);
@@ -507,7 +505,7 @@ function exportPDF(){
     <tr>
       <td>${i+1}</td><td>${r.fecha}</td><td>${r.hora}</td><td>${tLabel(r.turno)}</td>
       <td>${r.nombre}</td><td>${r.direccion}</td><td>${r.tipo}</td>
-      <td>${r.prioridad}</td><td>${r.estado}</td><td>${r.descripcion}</td>
+<td>${r.estado}</td><td>${r.derivado||'—'}</td><td>${r.descripcion}</td>
     </tr>`).join('');
   const w=window.open('','_blank');
   w.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8">
@@ -516,7 +514,7 @@ function exportPDF(){
   </head><body>
   <h1>🏘️ Reclamos Vecinales — PC Santa Cruz</h1>
   <div class="sub">Subsecretaría de Protección Civil · Generado: ${new Date().toLocaleString('es-AR')} · ${d.length} registro/s</div>
-  <table><thead><tr><th>#</th><th>Fecha</th><th>Hora</th><th>Turno</th><th>Vecino</th><th>Dirección</th><th>Tipo</th><th>Prioridad</th><th>Estado</th><th>Descripción</th></tr></thead>
+  <table><thead><tr><th>#</th><th>Fecha</th><th>Hora</th><th>Turno</th><th>Vecino</th><th>Dirección</th><th>Tipo</th><th>Estado</th><th>Derivado a</th><th>Descripción</th></tr></thead>
   <tbody>${rows}</tbody></table>
   <script>window.onload=()=>window.print();<\/script></body></html>`);
   w.document.close();
