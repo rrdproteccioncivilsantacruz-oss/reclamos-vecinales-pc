@@ -13,7 +13,7 @@
     --surface2:#151e2a;
     --border:  #1e2d3d;
     --accent:  #f97316;
-    --accent2: #22d3ee;
+    --accent2: #f97316;
     --accent3: #4ade80;
     --danger:  #ef4444;
     --warn:    #facc15;
@@ -23,7 +23,7 @@
     --turno-m: #facc15;
     --turno-t: #f97316;
     --turno-n: #818cf8;
-    --turno-a: #22d3ee;
+    --turno-a: #f97316;
     --card-accent: var(--danger);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -46,7 +46,7 @@
   .header-title { font-family: 'Bebas Neue',sans-serif; font-size: 1.3rem; letter-spacing: 0.1em; }
   .header-title span { color: var(--danger); }
   .header-right { display: flex; align-items: center; gap: 1.2rem; }
-  #clock { font-family: 'IBM Plex Mono',monospace; font-size: 0.8rem; color: var(--accent2); text-align: right; line-height: 1.4; }
+  #clock { font-family: 'IBM Plex Mono',monospace; font-size: 0.8rem; color: var(--accent); text-align: right; line-height: 1.4; }
   #clock .utc { font-size: 0.65rem; color: var(--muted); }
   .btn-volver { font-family:'IBM Plex Mono',monospace; font-size:0.7rem; letter-spacing:0.08em; color:var(--muted); border:1px solid var(--border); padding:4px 10px; border-radius:2px; text-decoration:none; transition:color .2s,border-color .2s; }
   .btn-volver:hover { color:var(--text); border-color:var(--muted); }
@@ -86,7 +86,7 @@
   /* ── TABLE ── */
   .table-controls { display:flex; gap:0.8rem; align-items:center; margin-bottom:1rem; flex-wrap:wrap; }
   .filter-select, .filter-input { background:var(--bg); border:1px solid var(--border); border-radius:2px; padding:0.45rem 0.7rem; font-family:'IBM Plex Mono',monospace; font-size:0.75rem; color:var(--text); outline:none; transition:border-color .2s; }
-  .filter-select:focus, .filter-input:focus { border-color:var(--accent2); }
+  .filter-select:focus, .filter-input:focus { border-color:var(--accent); }
   .export-btn { font-family:'IBM Plex Mono',monospace; font-size:0.7rem; letter-spacing:0.08em; padding:0.45rem 0.9rem; border-radius:2px; cursor:pointer; transition:all .2s; text-transform:uppercase; border:1px solid; }
   .export-btn.excel { color:var(--accent3); border-color:var(--accent3); background:transparent; }
   .export-btn.excel:hover { background:rgba(74,222,128,0.1); }
@@ -104,10 +104,10 @@
   .turno-badge.M { background:rgba(250,204,21,0.15); color:var(--turno-m); border:1px solid rgba(250,204,21,0.3); }
   .turno-badge.T { background:rgba(249,115,22,0.15); color:var(--turno-t); border:1px solid rgba(249,115,22,0.3); }
   .turno-badge.N { background:rgba(129,140,248,0.15); color:var(--turno-n); border:1px solid rgba(129,140,248,0.3); }
-  .turno-badge.A { background:rgba(34,211,238,0.15); color:var(--turno-a); border:1px solid rgba(34,211,238,0.3); }
+  .turno-badge.A { background:rgba(249,115,22,0.15); color:var(--turno-a); border:1px solid rgba(249,115,22,0.3); }
   .estado-badge { display:inline-block; font-family:'IBM Plex Mono',monospace; font-size:0.6rem; padding:2px 7px; border-radius:2px; letter-spacing:0.08em; font-weight:600; border:1px solid; }
   .estado-badge.Pendiente  { color:var(--warn);   border-color:rgba(250,204,21,0.4);  background:rgba(250,204,21,0.08); }
-  .estado-badge.En.curso   { color:var(--accent2); border-color:rgba(34,211,238,0.4); background:rgba(34,211,238,0.08); }
+  .estado-badge.En.curso   { color:var(--accent); border-color:rgba(249,115,22,0.4); background:rgba(249,115,22,0.08); }
   .estado-badge.Resuelto   { color:var(--accent3); border-color:rgba(74,222,128,0.4); background:rgba(74,222,128,0.08); }
   .estado-badge.Derivado   { color:var(--accent);  border-color:rgba(249,115,22,0.4); background:rgba(249,115,22,0.08); }
 
@@ -188,10 +188,10 @@
   <div class="section-title"><span>🏘️</span> Nuevo reclamo vecinal</div>
   <div style="display:flex;gap:1rem;margin-bottom:1rem;flex-wrap:wrap;">
     <div style="background:var(--surface2);border:1px solid var(--border);border-radius:2px;padding:0.45rem 1rem;font-family:'IBM Plex Mono',monospace;font-size:0.75rem;color:var(--muted);">
-      📅 Fecha: <span id="display-fecha" style="color:var(--accent2);">—</span>
+      📅 Fecha: <span id="display-fecha" style="color:var(--accent);">—</span>
     </div>
     <div style="background:var(--surface2);border:1px solid var(--border);border-radius:2px;padding:0.45rem 1rem;font-family:'IBM Plex Mono',monospace;font-size:0.75rem;color:var(--muted);">
-      🕐 Hora: <span id="display-hora" style="color:var(--accent2);">—</span>
+      🕐 Hora: <span id="display-hora" style="color:var(--accent);">—</span>
     </div>
     <div style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;color:var(--muted);align-self:center;">← Se registran automáticamente</div>
   </div>
