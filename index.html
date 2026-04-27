@@ -81,13 +81,7 @@
   .btn-guardar:hover { opacity:0.85; }
 
   /* ── TURNO SELECTOR ── */
-  .turno-selector { display:flex; gap:0.6rem; margin-bottom:1.2rem; flex-wrap:wrap; }
-  .turno-btn { flex:1; min-width:100px; padding:0.55rem 0.7rem; background:var(--surface2); border:1px solid var(--border); border-radius:2px; font-family:'IBM Plex Mono',monospace; font-size:0.68rem; color:var(--muted); cursor:pointer; transition:all .2s; text-align:center; text-transform:uppercase; letter-spacing:0.06em; }
-  .turno-btn[data-turno="M"].active { border-color:var(--turno-m); color:var(--turno-m); background:rgba(250,204,21,0.08); }
-  .turno-btn[data-turno="T"].active { border-color:var(--turno-t); color:var(--turno-t); background:rgba(249,115,22,0.08); }
-  .turno-btn[data-turno="N"].active { border-color:var(--turno-n); color:var(--turno-n); background:rgba(129,140,248,0.08); }
-  .turno-btn[data-turno="A"].active { border-color:var(--turno-a); color:var(--turno-a); background:rgba(34,211,238,0.08); }
-  .turno-btn:not(.active):hover { border-color:var(--muted); color:var(--text); }
+  /* turno-selector reemplazado por select */
 
   /* ── TABLE ── */
   .table-controls { display:flex; gap:0.8rem; align-items:center; margin-bottom:1rem; flex-wrap:wrap; }
@@ -157,7 +151,7 @@
 
   @media (max-width:600px) {
     header { padding:0 1rem; } .tab-panel { padding:1.2rem 1rem; }
-    .form-grid { grid-template-columns:1fr; } .turno-btn { min-width:80px; font-size:0.62rem; }
+    .form-grid { grid-template-columns:1fr; }
   }
 </style>
 </head>
@@ -192,15 +186,24 @@
 <!-- ══ NUEVO RECLAMO ══ -->
 <div class="tab-panel active" id="tab-nuevo">
   <div class="section-title"><span>🏘️</span> Nuevo reclamo vecinal</div>
-
-  <div class="form-field" style="margin-bottom:1rem;">
-    <label>Turno</label>
-    <div class="turno-selector">
-      <div class="turno-btn" data-turno="A" onclick="selTurno('A')">🌃 Madrugada</div>
-      <div class="turno-btn" data-turno="M" onclick="selTurno('M')">☀️ Mañana</div>
-      <div class="turno-btn" data-turno="T" onclick="selTurno('T')">🌤️ Tarde</div>
-      <div class="turno-btn" data-turno="N" onclick="selTurno('N')">🌙 Noche</div>
+  <div style="display:flex;gap:1rem;margin-bottom:1rem;flex-wrap:wrap;">
+    <div style="background:var(--surface2);border:1px solid var(--border);border-radius:2px;padding:0.45rem 1rem;font-family:'IBM Plex Mono',monospace;font-size:0.75rem;color:var(--muted);">
+      📅 Fecha: <span id="display-fecha" style="color:var(--accent2);">—</span>
     </div>
+    <div style="background:var(--surface2);border:1px solid var(--border);border-radius:2px;padding:0.45rem 1rem;font-family:'IBM Plex Mono',monospace;font-size:0.75rem;color:var(--muted);">
+      🕐 Hora: <span id="display-hora" style="color:var(--accent2);">—</span>
+    </div>
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;color:var(--muted);align-self:center;">← Se registran automáticamente</div>
+  </div>
+
+  <div class="form-field" style="margin-bottom:1rem; max-width:320px;">
+    <label>Turno</label>
+    <select id="f-turno" onchange="selTurno(this.value)" style="background:var(--bg);border:1px solid var(--border);border-radius:2px;padding:0.6rem 0.8rem;font-family:'IBM Plex Mono',monospace;font-size:0.85rem;color:var(--text);outline:none;cursor:pointer;width:100%;">
+      <option value="A">🌃 Madrugada</option>
+      <option value="M">☀️ Mañana</option>
+      <option value="T">🌤️ Tarde</option>
+      <option value="N">🌙 Noche</option>
+    </select>
   </div>
 
   <div class="form-grid">
@@ -209,8 +212,12 @@
       <input type="text" id="f-nombre" placeholder="Apellido y nombre" autocomplete="off">
     </div>
     <div class="form-field">
-      <label>Teléfono / Contacto</label>
-      <input type="text" id="f-tel" placeholder="Opcional" autocomplete="off">
+      <label>Teléfono 1</label>
+      <input type="text" id="f-tel" placeholder="Teléfono fijo o celular" autocomplete="off">
+    </div>
+    <div class="form-field">
+      <label>Teléfono 2 / Contacto alternativo</label>
+      <input type="text" id="f-tel2" placeholder="Opcional" autocomplete="off">
     </div>
     <div class="form-field">
       <label>Dirección / Localidad</label>
@@ -331,6 +338,11 @@ function updateClock() {
   const now=new Date(), pad=n=>String(n).padStart(2,'0');
   document.getElementById('clk-local').textContent=`${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
   document.getElementById('clk-utc').textContent=`UTC ${pad(now.getUTCHours())}:${pad(now.getUTCMinutes())}`;
+  // Display automático en formulario
+  const df=document.getElementById('display-fecha');
+  const dh=document.getElementById('display-hora');
+  if(df) df.textContent=`${pad(now.getDate())}/${pad(now.getMonth()+1)}/${now.getFullYear()}`;
+  if(dh) dh.textContent=`${pad(now.getHours())}:${pad(now.getMinutes())}`;
 }
 setInterval(updateClock,1000); updateClock();
 
@@ -347,14 +359,16 @@ function showTab(id,btn) {
 // ── TURNO ──
 function selTurno(t) {
   turnoSel=t;
-  document.querySelectorAll('.turno-btn').forEach(b=>b.classList.toggle('active',b.dataset.turno===t));
 }
 (function autoTurno(){
   const h=new Date().getHours();
-  if(h>=6&&h<14) selTurno('M');
-  else if(h>=14&&h<22) selTurno('T');
-  else if(h>=22) selTurno('N');
-  else selTurno('A');
+  let t;
+  if(h>=6&&h<14) t='M';
+  else if(h>=14&&h<22) t='T';
+  else if(h>=22) t='N';
+  else t='A';
+  document.getElementById('f-turno').value=t;
+  turnoSel=t;
 })();
 
 // ── CHAR ──
@@ -366,7 +380,6 @@ function updateChar(){
 
 // ── GUARDAR ──
 function guardarReclamo(){
-  if(!turnoSel){ showToast('Seleccioná un turno',true); return; }
   const nombre=document.getElementById('f-nombre').value.trim();
   const dir=document.getElementById('f-dir').value.trim();
   const oper=document.getElementById('f-oper').value.trim();
@@ -375,20 +388,22 @@ function guardarReclamo(){
   if(!dir){ showToast('Completá la dirección',true); return; }
   if(!desc){ showToast('Completá la descripción',true); return; }
   const now=new Date(), pad=n=>String(n).padStart(2,'0');
+  const turno=document.getElementById('f-turno').value;
   const lista=loadData();
   lista.push({
     id: Date.now(),
     fecha: `${pad(now.getDate())}/${pad(now.getMonth()+1)}/${now.getFullYear()}`,
     hora:  `${pad(now.getHours())}:${pad(now.getMinutes())}`,
-    turno: turnoSel,
-    nombre, tel: document.getElementById('f-tel').value.trim(),
+    turno: turno,
+    nombre,
+    tel:  document.getElementById('f-tel').value.trim(),
+    tel2: document.getElementById('f-tel2').value.trim(),
     direccion: dir, tipo: document.getElementById('f-tipo').value,
     prioridad: document.getElementById('f-prior').value,
     operador: oper||'—', descripcion: desc, estado: 'Pendiente'
   });
   saveData(lista);
-  // reset form
-  ['f-nombre','f-tel','f-dir','f-oper','f-desc'].forEach(id=>document.getElementById(id).value='');
+  ['f-nombre','f-tel','f-tel2','f-dir','f-oper','f-desc'].forEach(id=>document.getElementById(id).value='');
   updateChar();
   showToast('✓ Reclamo registrado',false);
 }
@@ -435,7 +450,8 @@ function verDetalle(id){
     <div class="detalle-row"><div class="detalle-lbl">Fecha / Hora</div><div class="detalle-val">${r.fecha} a las ${r.hora}</div></div>
     <div class="detalle-row"><div class="detalle-lbl">Turno</div><div class="detalle-val"><span class="turno-badge ${r.turno}">${tLabel(r.turno)}</span></div></div>
     <div class="detalle-row"><div class="detalle-lbl">Vecino</div><div class="detalle-val">${r.nombre}</div></div>
-    <div class="detalle-row"><div class="detalle-lbl">Teléfono</div><div class="detalle-val">${r.tel||'—'}</div></div>
+    <div class="detalle-row"><div class="detalle-lbl">Teléfono 1</div><div class="detalle-val">${r.tel||'—'}</div></div>
+    ${r.tel2?`<div class="detalle-row"><div class="detalle-lbl">Teléfono 2</div><div class="detalle-val">${r.tel2}</div></div>`:''}
     <div class="detalle-row"><div class="detalle-lbl">Dirección</div><div class="detalle-val">${r.direccion}</div></div>
     <div class="detalle-row"><div class="detalle-lbl">Tipo</div><div class="detalle-val">${r.tipo}</div></div>
     <div class="detalle-row"><div class="detalle-lbl">Prioridad</div><div class="detalle-val" style="color:${pColor(r.prioridad)}">${r.prioridad}</div></div>
@@ -472,11 +488,11 @@ function renderStats(){
 function exportExcel(){
   const d=loadData();
   if(!d.length){ showToast('Sin datos para exportar',true); return; }
-  const rows=[['#','Fecha','Hora','Turno','Vecino','Teléfono','Dirección','Tipo','Prioridad','Operador','Estado','Descripción']];
-  d.forEach((r,i)=>rows.push([i+1,r.fecha,r.hora,tLabel(r.turno),r.nombre,r.tel||'',r.direccion,r.tipo,r.prioridad,r.operador,r.estado,r.descripcion]));
+  const rows=[['#','Fecha','Hora','Turno','Vecino','Teléfono 1','Teléfono 2','Dirección','Tipo','Prioridad','Operador','Estado','Descripción']];
+  d.forEach((r,i)=>rows.push([i+1,r.fecha,r.hora,tLabel(r.turno),r.nombre,r.tel||'',r.tel2||'',r.direccion,r.tipo,r.prioridad,r.operador,r.estado,r.descripcion]));
   const wb=XLSX.utils.book_new();
   const ws=XLSX.utils.aoa_to_sheet(rows);
-  ws['!cols']=[4,12,8,12,20,14,24,20,12,18,12,50].map(w=>({wch:w}));
+  ws['!cols']=[4,12,8,12,20,14,14,24,20,12,18,12,50].map(w=>({wch:w}));
   XLSX.utils.book_append_sheet(wb,ws,'Reclamos Vecinales');
   const hoyStr=new Date().toLocaleDateString('es-AR').replace(/\//g,'-');
   XLSX.writeFile(wb,`reclamos_vecinales_${hoyStr}.xlsx`);
