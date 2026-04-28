@@ -13,7 +13,7 @@
     --surface2:#151e2a;
     --border:  #1e2d3d;
     --accent:  #f97316;
-    --accent2: #f97316;
+    --accent2: #22d3ee;
     --accent3: #4ade80;
     --danger:  #ef4444;
     --warn:    #facc15;
@@ -23,7 +23,7 @@
     --turno-m: #facc15;
     --turno-t: #f97316;
     --turno-n: #818cf8;
-    --turno-a: #f97316;
+    --turno-a: #22d3ee;
     --card-accent: var(--danger);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -42,18 +42,18 @@
   }
   .header-left { display: flex; align-items: center; gap: 0.8rem; }
   .header-logo { width: 44px; height: 44px; object-fit: contain; }
-  .header-badge { font-family: 'Bebas Neue',sans-serif; font-size: 0.75rem; letter-spacing: 0.15em; color: var(--danger); border: 1px solid var(--danger); padding: 2px 8px; border-radius: 2px; }
+  .header-badge { font-family: 'Bebas Neue',sans-serif; font-size: 0.85rem; letter-spacing: 0.15em; color: var(--danger); border: 1px solid var(--danger); padding: 2px 8px; border-radius: 2px; }
   .header-title { font-family: 'Bebas Neue',sans-serif; font-size: 1.3rem; letter-spacing: 0.1em; }
   .header-title span { color: var(--danger); }
   .header-right { display: flex; align-items: center; gap: 1.2rem; }
-  #clock { font-family: 'IBM Plex Mono',monospace; font-size: 0.8rem; color: var(--accent); text-align: right; line-height: 1.4; }
-  #clock .utc { font-size: 0.65rem; color: var(--muted); }
+  #clock { font-family: 'IBM Plex Mono',monospace; font-size: 0.8rem; color: var(--accent2); text-align: right; line-height: 1.4; }
+  #clock .utc { font-size: 0.78rem; color: var(--muted); }
   .btn-volver { font-family:'IBM Plex Mono',monospace; font-size:0.7rem; letter-spacing:0.08em; color:var(--muted); border:1px solid var(--border); padding:4px 10px; border-radius:2px; text-decoration:none; transition:color .2s,border-color .2s; }
   .btn-volver:hover { color:var(--text); border-color:var(--muted); }
 
   /* ── TABS ── */
   .tabs { background:var(--surface); border-bottom:1px solid var(--border); display:flex; padding:0 2rem; position:sticky; top:64px; z-index:90; }
-  .tab-btn { font-family:'IBM Plex Mono',monospace; font-size:0.72rem; letter-spacing:0.1em; padding:0.9rem 1.2rem; border:none; background:transparent; color:var(--muted); cursor:pointer; border-bottom:2px solid transparent; transition:color .2s,border-color .2s; text-transform:uppercase; }
+  .tab-btn { font-family:'IBM Plex Mono',monospace; font-size:0.72rem; letter-spacing:0.1em; padding:0.9rem 1.2rem; border:none; background:transparent; color:var(--text); cursor:pointer; border-bottom:2px solid transparent; transition:color .2s,border-color .2s; text-transform:uppercase; }
   .tab-btn.active { color:var(--danger); border-bottom-color:var(--danger); }
   .tab-btn:hover:not(.active) { color:var(--text); }
   .tab-panel { display:none; padding:2rem; max-width:1100px; margin:0 auto; }
@@ -66,7 +66,7 @@
   /* ── FORM ── */
   .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
   .form-field { display:flex; flex-direction:column; gap:0.3rem; }
-  .form-field label { font-family:'IBM Plex Mono',monospace; font-size:0.68rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.08em; }
+  .form-field label { font-family:'IBM Plex Mono',monospace; font-size:0.8rem; color:var(--accent); text-transform:uppercase; letter-spacing:0.08em; font-weight:600; }
   .form-field input, .form-field select, .form-field textarea {
     background:var(--bg); border:1px solid var(--border); border-radius:2px;
     padding:0.55rem 0.7rem; font-family:'IBM Plex Mono',monospace; font-size:0.82rem;
@@ -75,28 +75,34 @@
   .form-field input:focus, .form-field select:focus, .form-field textarea:focus { border-color:var(--danger); }
   .form-full { grid-column:1/-1; }
   textarea { resize:vertical; min-height:80px; line-height:1.5; }
-  .char-count { font-family:'IBM Plex Mono',monospace; font-size:0.65rem; color:var(--muted); text-align:right; }
+  .char-count { font-family:'IBM Plex Mono',monospace; font-size:0.78rem; color:var(--text); text-align:right; }
   .char-count.warn { color:var(--warn); }
   .btn-guardar { background:var(--danger); color:#fff; font-family:'IBM Plex Mono',monospace; font-size:0.8rem; font-weight:600; letter-spacing:0.12em; padding:0.75rem 2rem; border:none; border-radius:2px; cursor:pointer; transition:opacity .2s; text-transform:uppercase; float:right; margin-top:1rem; }
   .btn-guardar:hover { opacity:0.85; }
 
   /* ── TURNO SELECTOR ── */
-  /* turno-selector reemplazado por select */
+  .turno-selector { display:flex; gap:0.6rem; margin-bottom:1.2rem; flex-wrap:wrap; }
+  .turno-btn { flex:1; min-width:100px; padding:0.55rem 0.7rem; background:var(--surface2); border:1px solid var(--border); border-radius:2px; font-family:'IBM Plex Mono',monospace; font-size:0.68rem; color:var(--muted); cursor:pointer; transition:all .2s; text-align:center; text-transform:uppercase; letter-spacing:0.06em; }
+  .turno-btn[data-turno="M"].active { border-color:var(--turno-m); color:var(--turno-m); background:rgba(250,204,21,0.08); }
+  .turno-btn[data-turno="T"].active { border-color:var(--turno-t); color:var(--turno-t); background:rgba(249,115,22,0.08); }
+  .turno-btn[data-turno="N"].active { border-color:var(--turno-n); color:var(--turno-n); background:rgba(129,140,248,0.08); }
+  .turno-btn[data-turno="A"].active { border-color:var(--turno-a); color:var(--turno-a); background:rgba(34,211,238,0.08); }
+  .turno-btn:not(.active):hover { border-color:var(--muted); color:var(--text); }
 
   /* ── TABLE ── */
   .table-controls { display:flex; gap:0.8rem; align-items:center; margin-bottom:1rem; flex-wrap:wrap; }
   .filter-select, .filter-input { background:var(--bg); border:1px solid var(--border); border-radius:2px; padding:0.45rem 0.7rem; font-family:'IBM Plex Mono',monospace; font-size:0.75rem; color:var(--text); outline:none; transition:border-color .2s; }
-  .filter-select:focus, .filter-input:focus { border-color:var(--accent); }
+  .filter-select:focus, .filter-input:focus { border-color:var(--accent2); }
   .export-btn { font-family:'IBM Plex Mono',monospace; font-size:0.7rem; letter-spacing:0.08em; padding:0.45rem 0.9rem; border-radius:2px; cursor:pointer; transition:all .2s; text-transform:uppercase; border:1px solid; }
   .export-btn.excel { color:var(--accent3); border-color:var(--accent3); background:transparent; }
   .export-btn.excel:hover { background:rgba(74,222,128,0.1); }
   .export-btn.pdf   { color:var(--danger); border-color:var(--danger); background:transparent; }
   .export-btn.pdf:hover   { background:rgba(239,68,68,0.1); }
   table { width:100%; border-collapse:collapse; }
-  th { background:var(--surface2); font-family:'IBM Plex Mono',monospace; font-size:0.65rem; letter-spacing:0.12em; color:var(--muted); text-transform:uppercase; padding:0.6rem 0.8rem; text-align:left; border-bottom:1px solid var(--border); }
-  td { padding:0.65rem 0.8rem; font-size:0.8rem; border-bottom:1px solid var(--border); vertical-align:top; }
+  th { background:var(--surface2); font-family:'IBM Plex Mono',monospace; font-size:0.65rem; letter-spacing:0.12em; color:var(--text); text-transform:uppercase; padding:0.6rem 0.8rem; text-align:left; border-bottom:1px solid var(--border); font-weight:600; }
+  td { padding:0.65rem 0.8rem; font-size:0.88rem; border-bottom:1px solid var(--border); vertical-align:top; color:var(--text); }
   tr:hover td { background:rgba(255,255,255,0.02); }
-  .td-mono { font-family:'IBM Plex Mono',monospace; font-size:0.72rem; }
+  .td-mono { font-family:'IBM Plex Mono',monospace; font-size:0.82rem; color:var(--text); }
   .empty-msg { font-family:'IBM Plex Mono',monospace; font-size:0.78rem; color:var(--muted); text-align:center; padding:2.5rem; }
 
   /* ── BADGES ── */
@@ -104,10 +110,10 @@
   .turno-badge.M { background:rgba(250,204,21,0.15); color:var(--turno-m); border:1px solid rgba(250,204,21,0.3); }
   .turno-badge.T { background:rgba(249,115,22,0.15); color:var(--turno-t); border:1px solid rgba(249,115,22,0.3); }
   .turno-badge.N { background:rgba(129,140,248,0.15); color:var(--turno-n); border:1px solid rgba(129,140,248,0.3); }
-  .turno-badge.A { background:rgba(249,115,22,0.15); color:var(--turno-a); border:1px solid rgba(249,115,22,0.3); }
+  .turno-badge.A { background:rgba(34,211,238,0.15); color:var(--turno-a); border:1px solid rgba(34,211,238,0.3); }
   .estado-badge { display:inline-block; font-family:'IBM Plex Mono',monospace; font-size:0.6rem; padding:2px 7px; border-radius:2px; letter-spacing:0.08em; font-weight:600; border:1px solid; }
   .estado-badge.Pendiente  { color:var(--warn);   border-color:rgba(250,204,21,0.4);  background:rgba(250,204,21,0.08); }
-  .estado-badge.En.curso   { color:var(--accent); border-color:rgba(249,115,22,0.4); background:rgba(249,115,22,0.08); }
+  .estado-badge.En.curso   { color:var(--accent2); border-color:rgba(34,211,238,0.4); background:rgba(34,211,238,0.08); }
   .estado-badge.Resuelto   { color:var(--accent3); border-color:rgba(74,222,128,0.4); background:rgba(74,222,128,0.08); }
   .estado-badge.Derivado   { color:var(--accent);  border-color:rgba(249,115,22,0.4); background:rgba(249,115,22,0.08); }
 
@@ -151,7 +157,7 @@
 
   @media (max-width:600px) {
     header { padding:0 1rem; } .tab-panel { padding:1.2rem 1rem; }
-    .form-grid { grid-template-columns:1fr; }
+    .form-grid { grid-template-columns:1fr; } .turno-btn { min-width:80px; font-size:0.62rem; }
   }
 </style>
 </head>
@@ -186,24 +192,15 @@
 <!-- ══ NUEVO RECLAMO ══ -->
 <div class="tab-panel active" id="tab-nuevo">
   <div class="section-title"><span>🏘️</span> Nuevo reclamo vecinal</div>
-  <div style="display:flex;gap:1rem;margin-bottom:1rem;flex-wrap:wrap;">
-    <div style="background:var(--surface2);border:1px solid var(--border);border-radius:2px;padding:0.45rem 1rem;font-family:'IBM Plex Mono',monospace;font-size:0.75rem;color:var(--muted);">
-      📅 Fecha: <span id="display-fecha" style="color:var(--accent);">—</span>
-    </div>
-    <div style="background:var(--surface2);border:1px solid var(--border);border-radius:2px;padding:0.45rem 1rem;font-family:'IBM Plex Mono',monospace;font-size:0.75rem;color:var(--muted);">
-      🕐 Hora: <span id="display-hora" style="color:var(--accent);">—</span>
-    </div>
-    <div style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;color:var(--muted);align-self:center;">← Se registran automáticamente</div>
-  </div>
 
-  <div class="form-field" style="margin-bottom:1rem; max-width:320px;">
+  <div class="form-field" style="margin-bottom:1rem;">
     <label>Turno</label>
-    <select id="f-turno" onchange="selTurno(this.value)" style="background:var(--bg);border:1px solid var(--border);border-radius:2px;padding:0.6rem 0.8rem;font-family:'IBM Plex Mono',monospace;font-size:0.85rem;color:var(--text);outline:none;cursor:pointer;width:100%;">
-      <option value="A">🌃 Madrugada</option>
-      <option value="M">☀️ Mañana</option>
-      <option value="T">🌤️ Tarde</option>
-      <option value="N">🌙 Noche</option>
-    </select>
+    <div class="turno-selector">
+      <div class="turno-btn" data-turno="A" onclick="selTurno('A')">🌃 Madrugada</div>
+      <div class="turno-btn" data-turno="M" onclick="selTurno('M')">☀️ Mañana</div>
+      <div class="turno-btn" data-turno="T" onclick="selTurno('T')">🌤️ Tarde</div>
+      <div class="turno-btn" data-turno="N" onclick="selTurno('N')">🌙 Noche</div>
+    </div>
   </div>
 
   <div class="form-grid">
@@ -212,12 +209,8 @@
       <input type="text" id="f-nombre" placeholder="Apellido y nombre" autocomplete="off">
     </div>
     <div class="form-field">
-      <label>Teléfono 1</label>
-      <input type="text" id="f-tel" placeholder="Teléfono fijo o celular" autocomplete="off">
-    </div>
-    <div class="form-field">
-      <label>Teléfono 2 / Contacto alternativo</label>
-      <input type="text" id="f-tel2" placeholder="Opcional" autocomplete="off">
+      <label>Teléfono / Contacto</label>
+      <input type="text" id="f-tel" placeholder="Opcional" autocomplete="off">
     </div>
     <div class="form-field">
       <label>Dirección / Localidad</label>
@@ -241,14 +234,17 @@
         <option>Otro</option>
       </select>
     </div>
-
+    <div class="form-field">
+      <label>Prioridad</label>
+      <select id="f-prior">
+        <option>Normal</option>
+        <option>Urgente</option>
+        <option>Crítico</option>
+      </select>
+    </div>
     <div class="form-field">
       <label>Operador que recepciona</label>
       <input type="text" id="f-oper" placeholder="Apellido y nombre" autocomplete="off">
-    </div>
-    <div class="form-field">
-      <label>Derivado a</label>
-      <input type="text" id="f-derivado" placeholder="Organismo o ente al que se deriva (opcional)" autocomplete="off">
     </div>
     <div class="form-field form-full">
       <label>Descripción del reclamo</label>
@@ -290,7 +286,7 @@
   <div style="overflow-x:auto;">
     <table>
       <thead>
-        <tr><th>#</th><th>Fecha</th><th>Hora</th><th>Turno</th><th>Vecino</th><th>Dirección</th><th>Tipo</th><th>Estado</th><th>Acción</th></tr>
+        <tr><th>#</th><th>Fecha</th><th>Hora</th><th>Turno</th><th>Vecino</th><th>Dirección</th><th>Tipo</th><th>Prior.</th><th>Estado</th><th>Acción</th></tr>
       </thead>
       <tbody id="reg-body"></tbody>
     </table>
@@ -335,11 +331,6 @@ function updateClock() {
   const now=new Date(), pad=n=>String(n).padStart(2,'0');
   document.getElementById('clk-local').textContent=`${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
   document.getElementById('clk-utc').textContent=`UTC ${pad(now.getUTCHours())}:${pad(now.getUTCMinutes())}`;
-  // Display automático en formulario
-  const df=document.getElementById('display-fecha');
-  const dh=document.getElementById('display-hora');
-  if(df) df.textContent=`${pad(now.getDate())}/${pad(now.getMonth()+1)}/${now.getFullYear()}`;
-  if(dh) dh.textContent=`${pad(now.getHours())}:${pad(now.getMinutes())}`;
 }
 setInterval(updateClock,1000); updateClock();
 
@@ -356,16 +347,14 @@ function showTab(id,btn) {
 // ── TURNO ──
 function selTurno(t) {
   turnoSel=t;
+  document.querySelectorAll('.turno-btn').forEach(b=>b.classList.toggle('active',b.dataset.turno===t));
 }
 (function autoTurno(){
   const h=new Date().getHours();
-  let t;
-  if(h>=6&&h<14) t='M';
-  else if(h>=14&&h<22) t='T';
-  else if(h>=22) t='N';
-  else t='A';
-  document.getElementById('f-turno').value=t;
-  turnoSel=t;
+  if(h>=6&&h<14) selTurno('M');
+  else if(h>=14&&h<22) selTurno('T');
+  else if(h>=22) selTurno('N');
+  else selTurno('A');
 })();
 
 // ── CHAR ──
@@ -377,6 +366,7 @@ function updateChar(){
 
 // ── GUARDAR ──
 function guardarReclamo(){
+  if(!turnoSel){ showToast('Seleccioná un turno',true); return; }
   const nombre=document.getElementById('f-nombre').value.trim();
   const dir=document.getElementById('f-dir').value.trim();
   const oper=document.getElementById('f-oper').value.trim();
@@ -385,31 +375,27 @@ function guardarReclamo(){
   if(!dir){ showToast('Completá la dirección',true); return; }
   if(!desc){ showToast('Completá la descripción',true); return; }
   const now=new Date(), pad=n=>String(n).padStart(2,'0');
-  const turno=document.getElementById('f-turno').value;
   const lista=loadData();
-  const derivadoOrg = document.getElementById('f-derivado').value.trim();
-  const estadoInicial = derivadoOrg ? 'Derivado' : 'Pendiente';
   lista.push({
     id: Date.now(),
     fecha: `${pad(now.getDate())}/${pad(now.getMonth()+1)}/${now.getFullYear()}`,
     hora:  `${pad(now.getHours())}:${pad(now.getMinutes())}`,
-    turno: turno,
-    nombre,
-    tel:  document.getElementById('f-tel').value.trim(),
-    tel2: document.getElementById('f-tel2').value.trim(),
+    turno: turnoSel,
+    nombre, tel: document.getElementById('f-tel').value.trim(),
     direccion: dir, tipo: document.getElementById('f-tipo').value,
-    operador: oper||'—', descripcion: desc,
-    estado: estadoInicial,
-    derivado: derivadoOrg || ''
+    prioridad: document.getElementById('f-prior').value,
+    operador: oper||'—', descripcion: desc, estado: 'Pendiente'
   });
   saveData(lista);
-  ['f-nombre','f-tel','f-tel2','f-dir','f-oper','f-desc','f-derivado'].forEach(id=>document.getElementById(id).value='');
+  // reset form
+  ['f-nombre','f-tel','f-dir','f-oper','f-desc'].forEach(id=>document.getElementById(id).value='');
   updateChar();
   showToast('✓ Reclamo registrado',false);
 }
 
 // ── TURNO LABEL ──
 function tLabel(t){ return {M:'Mañana',T:'Tarde',N:'Noche',A:'Madrugada'}[t]||t; }
+function pColor(p){ return {Normal:'var(--accent3)',Urgente:'var(--warn)',Crítico:'var(--danger)'}[p]||'var(--muted)'; }
 
 // ── RENDER REGISTROS ──
 function renderRegistros(){
@@ -434,7 +420,8 @@ function renderRegistros(){
       <td style="font-size:0.78rem;white-space:nowrap">${r.nombre}</td>
       <td style="font-size:0.75rem">${r.direccion}</td>
       <td style="font-size:0.75rem">${r.tipo}</td>
-      <td><span class="estado-badge ${r.estado.replace(' ','.')}" title="${r.derivado?'→ '+r.derivado:''}">${r.estado}${r.derivado?' →':''}</span></td>
+      <td style="font-size:0.75rem;color:${pColor(r.prioridad)}">${r.prioridad}</td>
+      <td><span class="estado-badge ${r.estado.replace(' ','.')}">${r.estado}</span></td>
       <td><button style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;padding:2px 8px;background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:2px;cursor:pointer;" onclick="verDetalle(${r.id})">Ver</button></td>
     </tr>`).join('');
 }
@@ -448,12 +435,11 @@ function verDetalle(id){
     <div class="detalle-row"><div class="detalle-lbl">Fecha / Hora</div><div class="detalle-val">${r.fecha} a las ${r.hora}</div></div>
     <div class="detalle-row"><div class="detalle-lbl">Turno</div><div class="detalle-val"><span class="turno-badge ${r.turno}">${tLabel(r.turno)}</span></div></div>
     <div class="detalle-row"><div class="detalle-lbl">Vecino</div><div class="detalle-val">${r.nombre}</div></div>
-    <div class="detalle-row"><div class="detalle-lbl">Teléfono 1</div><div class="detalle-val">${r.tel||'—'}</div></div>
-    ${r.tel2?`<div class="detalle-row"><div class="detalle-lbl">Teléfono 2</div><div class="detalle-val">${r.tel2}</div></div>`:''}
+    <div class="detalle-row"><div class="detalle-lbl">Teléfono</div><div class="detalle-val">${r.tel||'—'}</div></div>
     <div class="detalle-row"><div class="detalle-lbl">Dirección</div><div class="detalle-val">${r.direccion}</div></div>
     <div class="detalle-row"><div class="detalle-lbl">Tipo</div><div class="detalle-val">${r.tipo}</div></div>
+    <div class="detalle-row"><div class="detalle-lbl">Prioridad</div><div class="detalle-val" style="color:${pColor(r.prioridad)}">${r.prioridad}</div></div>
     <div class="detalle-row"><div class="detalle-lbl">Estado</div><div class="detalle-val"><span class="estado-badge ${r.estado.replace(' ','.')}">${r.estado}</span></div></div>
-    ${r.derivado?`<div class="detalle-row"><div class="detalle-lbl">Derivado a</div><div class="detalle-val" style="color:var(--accent);font-weight:600;">${r.derivado}</div></div>`:''}
     <div class="detalle-row"><div class="detalle-lbl">Operador</div><div class="detalle-val">${r.operador}</div></div>
     <div class="detalle-desc">${r.descripcion}</div>
     <div class="detalle-actions">
@@ -486,11 +472,11 @@ function renderStats(){
 function exportExcel(){
   const d=loadData();
   if(!d.length){ showToast('Sin datos para exportar',true); return; }
-  const rows=[['#','Fecha','Hora','Turno','Vecino','Teléfono 1','Teléfono 2','Dirección','Tipo','Operador','Estado','Derivado a','Descripción']];
-  d.forEach((r,i)=>rows.push([i+1,r.fecha,r.hora,tLabel(r.turno),r.nombre,r.tel||'',r.tel2||'',r.direccion,r.tipo,r.operador,r.estado,r.derivado||'',r.descripcion]));
+  const rows=[['#','Fecha','Hora','Turno','Vecino','Teléfono','Dirección','Tipo','Prioridad','Operador','Estado','Descripción']];
+  d.forEach((r,i)=>rows.push([i+1,r.fecha,r.hora,tLabel(r.turno),r.nombre,r.tel||'',r.direccion,r.tipo,r.prioridad,r.operador,r.estado,r.descripcion]));
   const wb=XLSX.utils.book_new();
   const ws=XLSX.utils.aoa_to_sheet(rows);
-  ws['!cols']=[4,12,8,12,20,14,14,24,20,18,12,20,50].map(w=>({wch:w}));
+  ws['!cols']=[4,12,8,12,20,14,24,20,12,18,12,50].map(w=>({wch:w}));
   XLSX.utils.book_append_sheet(wb,ws,'Reclamos Vecinales');
   const hoyStr=new Date().toLocaleDateString('es-AR').replace(/\//g,'-');
   XLSX.writeFile(wb,`reclamos_vecinales_${hoyStr}.xlsx`);
@@ -505,7 +491,7 @@ function exportPDF(){
     <tr>
       <td>${i+1}</td><td>${r.fecha}</td><td>${r.hora}</td><td>${tLabel(r.turno)}</td>
       <td>${r.nombre}</td><td>${r.direccion}</td><td>${r.tipo}</td>
-<td>${r.estado}</td><td>${r.derivado||'—'}</td><td>${r.descripcion}</td>
+      <td>${r.prioridad}</td><td>${r.estado}</td><td>${r.descripcion}</td>
     </tr>`).join('');
   const w=window.open('','_blank');
   w.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8">
@@ -514,7 +500,7 @@ function exportPDF(){
   </head><body>
   <h1>🏘️ Reclamos Vecinales — PC Santa Cruz</h1>
   <div class="sub">Subsecretaría de Protección Civil · Generado: ${new Date().toLocaleString('es-AR')} · ${d.length} registro/s</div>
-  <table><thead><tr><th>#</th><th>Fecha</th><th>Hora</th><th>Turno</th><th>Vecino</th><th>Dirección</th><th>Tipo</th><th>Estado</th><th>Derivado a</th><th>Descripción</th></tr></thead>
+  <table><thead><tr><th>#</th><th>Fecha</th><th>Hora</th><th>Turno</th><th>Vecino</th><th>Dirección</th><th>Tipo</th><th>Prioridad</th><th>Estado</th><th>Descripción</th></tr></thead>
   <tbody>${rows}</tbody></table>
   <script>window.onload=()=>window.print();<\/script></body></html>`);
   w.document.close();
